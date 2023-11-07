@@ -1,1 +1,7 @@
 *.ipynb
+
+# db extensions
+*.csv
+*.xlms
+*.sql 
+*.db

@@ -33,9 +33,13 @@ def df_info(df):
         # count of unique elements
         info_dict['unique_values'].append(col_data.nunique())
         
-        # examples -> get fraction for min and max
-        info_dict['example_min'].append(col_data.min())
-        info_dict['example_max'].append(col_data.max())
+        # examples 
+        try:
+            info_dict['example_min'].append((round((col_data.min() == col_data).mean(), 3)), col_data.min())
+            info_dict['example_max'].append((round((col_data.max() == col_data).mean(), 3)), col_data.max())
+        except TypeError:
+            info_dict['example_min'].append((round((col_data.astype(str).min() == col_data).mean(), 3), col_data.astype(str).min()))
+            info_dict['example_max'].append((round((col_data.astype(str).max() == col_data).mean(), 3), col_data.astype(str).max())) 
         
         # fraction of null values
         nan_ratio = col_data.isna().mean()
@@ -56,7 +60,7 @@ def df_info(df):
         info_dict['most_freq_frac'].append((round(mff_max_fraction, 3) if mff_max_fraction != 0 else '●', mff_max_value))
 
         #trash score - how many useless values we have
-        info_dict['trash_score'].append(round(empty_str_ratio + nan_ratio + zeros, 3)) 
+        trash = empty_str_ratio + nan_ratio + zeros
+        info_dict['trash_score'].append(round(trash, 3) if trash != 0 else '●') 
 
     return pd.DataFrame(info_dict, index=df.columns)
-

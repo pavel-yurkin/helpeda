@@ -39,7 +39,7 @@ def df_info(df):
         try:
             mn_element = col_data.min()
             mx_element = col_data.max()
-        except TypeError:
+        except:
             mn_element = col_data.astype(str).min()
             mx_element = col_data.astype(str).max()
 
